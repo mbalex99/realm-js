@@ -524,7 +524,12 @@ void RealmClass<T>::objects(ContextType ctx, FunctionType, ObjectType this_objec
     SharedRealm realm = *get_internal<T, RealmClass<T>>(this_object);
     auto &object_schema = validated_object_schema_for_value(ctx, realm, arguments[0]);
 
-    return_value.set(ResultsClass<T>::create_instance(ctx, realm, object_schema));
+    auto results = ResultsClass<T>::create_instance(ctx, realm, object_schema);
+    if (Value::is_object(ctx, results)) {
+        return_value.set(results);
+    } else {
+        return_value.set_null();
+    }
 }
 
 template<typename T>

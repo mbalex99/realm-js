@@ -102,8 +102,11 @@ typename T::Object ResultsClass<T>::create_instance(ContextType ctx, realm::Resu
 
 template<typename T>
 typename T::Object ResultsClass<T>::create_instance(ContextType ctx, SharedRealm realm, const ObjectSchema &object_schema) {
-    auto table = ObjectStore::table_for_object_type(realm->read_group(), object_schema.name);
-    return create_object<T, ResultsClass<T>>(ctx, new realm::js::Results<T>(realm, *table));
+    if (auto table = ObjectStore::table_for_object_type(realm->read_group(), object_schema.name)) {
+        return create_object<T, ResultsClass<T>>(ctx, new realm::js::Results<T>(realm, *table));
+    }
+
+    return {};
 }
 
 template<typename T>
