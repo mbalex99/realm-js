@@ -525,7 +525,7 @@ void RealmClass<T>::objects(ContextType ctx, FunctionType, ObjectType this_objec
     auto &object_schema = validated_object_schema_for_value(ctx, realm, arguments[0]);
 
     auto results = ResultsClass<T>::create_instance(ctx, realm, object_schema);
-    if (Value::is_object(ctx, results)) {
+    if (Value::is_valid(ctx, results)) {
         return_value.set(results);
     } else {
         return_value.set_null();
