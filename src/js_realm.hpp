@@ -513,10 +513,10 @@ void RealmClass<T>::get_sync_session(ContextType ctx, ObjectType object, ReturnV
     } else {
         return_value.set_null();
     }
-    
+
 }
 #endif
-    
+
 template<typename T>
 void RealmClass<T>::objects(ContextType ctx, FunctionType, ObjectType this_object, size_t argc, const ValueType arguments[], ReturnValue &return_value) {
     validate_argument_count(argc, 1);
@@ -525,7 +525,7 @@ void RealmClass<T>::objects(ContextType ctx, FunctionType, ObjectType this_objec
     auto &object_schema = validated_object_schema_for_value(ctx, realm, arguments[0]);
 
     auto results = ResultsClass<T>::create_instance(ctx, realm, object_schema);
-    if (Value::is_valid(ctx, results)) {
+    if (Value::is_valid(results)) {
         return_value.set(results);
     } else {
         return_value.set_null();
@@ -585,7 +585,7 @@ void RealmClass<T>::delete_one(ContextType ctx, FunctionType, ObjectType this_ob
         if (!object->is_valid()) {
             throw std::runtime_error("Object is invalid. Either it has been previously deleted or the Realm it belongs to has been closed.");
         }
-        
+
         realm::TableRef table = ObjectStore::table_for_object_type(realm->read_group(), object->get_object_schema().name);
         table->move_last_over(object->row().get_index());
     }
